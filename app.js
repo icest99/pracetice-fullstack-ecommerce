@@ -13,7 +13,9 @@ const cookieParser = require('cookie-parser');
 // database
 const connectDB = require('./db/connect');
 
+//  router
 const authRouter = require('./routes/authRoutes');
+const userRouter = require('./routes/userRoutes');
 
 const port = process.env.PORT || 5000;
 
@@ -36,6 +38,7 @@ app.get('/api/v1', (req, res) => {
   res.send('HELLO! EXPRESssS');
 });
 app.use('/api/v1/auth', authRouter);
+app.use('/api/v1/users', userRouter);
 
 app.use(notFoundMiddleware);
 app.use(errorHandlerMiddleware);
