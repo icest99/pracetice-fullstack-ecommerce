@@ -11,11 +11,14 @@ const register = async (req, res) => {
     throw new CustomError.BadRequestError('Email already exists');
   }
 
-  const isFirstAccount = await User.countDocuments({}) === 0;
+  const isFirstAccount = (await User.countDocuments({})) === 0;
   const role = isFirstAccount ? 'admin' : 'user';
 
   const user = await User.create({
-    name, email, password, role,
+    name,
+    email,
+    password,
+    role,
   });
 
   // eslint-disable-next-line no-underscore-dangle
@@ -41,7 +44,7 @@ const login = async (req, res) => {
 
   const isPasswordCorrect = await user.comparePassword(password);
   if (!isPasswordCorrect) {
-    throw new CustomError.UnauthenticatedError('Invalid Crendentials');
+    throw new CustomError.UnauthenticatedError('Invalid Credentials');
   }
   // eslint-disable-next-line no-underscore-dangle
   const tokenUser = { name: user.name, userId: user._id, role: user.role };
@@ -60,5 +63,7 @@ const logout = async (req, res) => {
 };
 
 module.exports = {
-  register, login, logout,
+  register,
+  login,
+  logout,
 };
